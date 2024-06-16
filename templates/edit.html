@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Змінити запис</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse;
+            margin: auto;
+            overflow: hidden; /* Prevent table borders from sticking out */
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #000000;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 7px;
+            background-color: #fff;
+            width: 80%;
+            max-width: 600px;
+            text-align: left;
+        }
+        input[type="text"], textarea, input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        input[type="submit"] {
+            margin-top: 4%;
+            background-color: #4D93F4;
+            color: #ffffff;
+            cursor: pointer;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .checkbox-container input[type="checkbox"] {
+            margin-left: 10px;
+        }
+        p {
+            margin-top: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #4D93F4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Змінити запис</h1>
+    {% if step == "display_entries" %}
+        {% if entries|length > 0 %}
+            <p>Choose an entry to edit:</p>
+            <form action="{{ url_for('edit') }}" method="post">
+                <table>
+                    <tr><th></th><th>Date</th><th>Title</th></tr>
+                    {% for entry in entries %}
+                        <tr>
+                            <td><input type="radio" name="postid" value="{{ entry.id }}"></td>
+                            <td>{{ entry.date }}</td>
+                            <td>{{ entry.title }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <input type="hidden" name="step" value="make_edits">
+                <input type="submit" value="Змінити">
+            </form>
+        {% else %}
+            <p>Немає записів</p>
+            <a href="{{ url_for('index') }}">Повернутися на головну сторінку</a>
+        {% endif %}
+
+    {% elif step == "make_edits" %}
+        <p>Виберіть, який запис потрібно змінити:</p>
+        <form action="{{ url_for('edit') }}" method="post">
+            <label for="title">Заголовок:</label><br>
+            <input type="text" id="title" name="title" value="{{ entry.title }}"><br><br>
+            <label for="content">Текст:</label><br>
+            <textarea id="content" name="content" rows="5" cols="40">{{ entry.content }}</textarea><br><br>
+            <label for="content">Коментарій:</label><br>
+            <textarea id="comment" name="comment" rows="5" cols="40">{{ entry.comment }}</textarea><br><br>
+            <div class="checkbox-container">
+                <label for="changedate">Оновити дату та час запису?</label>
+                <input type="checkbox" id="changedate" name="changedate" value="yes">
+            </div>
+            <input type="hidden" name="step" value="update_database">
+            <input type="hidden" name="postid" value="{{ entry.id }}">
+            <input type="submit" value="Зберегти зміни">
+        </form>
+
+    {% elif step == "update_database" %}
+        <p>Запис було успішно змінено</p>
+        <a href="{{ url_for('index') }}">Повернутися на головну сторінку</a>
+    {% endif %}
+</body>
+</html>

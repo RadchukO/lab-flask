@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Видалення записів</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            max-width: 600px;
+            border-collapse: collapse;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #000000;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 7px;
+            background-color: #fff;
+            width: 80%;
+            max-width: 600px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 4%;
+            width: 100%;
+        }
+        p {
+            margin-top: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Видалення записів</h1>
+    {% if step == "display_entries" %}
+        {% if entries|length > 0 %}
+            <p>Виберіть запис, який потрібно видалити:</p>
+            <form action="{{ url_for('delete') }}" method="post">
+                <table>
+                    <tr><th></th><th>Дата</th><th>Заголовок</th></tr>
+                    {% for entry in entries %}
+                        <tr>
+                            <td><input type="radio" name="postid" value="{{entry.id}}"></td>
+                            <td>{{ entry.date }}</td>
+                            <td>{{ entry.title }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <input type="hidden" name="step" value="delete_entry">
+                <input type="submit" value="Видалити">
+            </form>
+        {% else %}
+            <p>Записів немає</p>
+            <a href="{{ url_for('index') }}">Повернутися на головну сторінку</a>
+        {% endif %}
+    {% elif step == "delete_entry" %}
+        <p>Запис було успіщно видалено</p>
+        <a href="{{ url_for('index') }}">Повернутися на головну сторінку</a>
+    {% endif %}
+</body>
+</html>

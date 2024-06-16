@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Створити новий запис</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        form {
+            width: 80%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 7px;
+        }
+        input[type="text"],
+        textarea,
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        p {
+            margin-top: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Створити новий запис</h1>
+    {% if step == "compose_entry" %}
+        <form action="{{ url_for('write') }}" method="post">
+            <label for="title">Title:</label><br>
+            <input type="text" id="title" name="title" size="30"><br><br>
+            <label for="content">Text:</label><br>
+            <textarea id="content" name="content" rows="5" cols="40"></textarea><br><br>
+            <label for="comment">Comment:</label><br>
+            <textarea id="comment" name="comment" rows="5" cols="40"></textarea><br><br>
+            <input type="hidden" name="step" value="add_entry">
+            <input style="background-color: #4D93F4; color: #ffffff;" type="submit" value="Створити">
+        </form>
+    {% elif step == "add_entry" %}
+        <p>Ваш запис було успішно створено</p>
+        <a href="{{ url_for('index') }}">Повернутися на головну сторінку</a>
+    {% endif %}
+</body>
+</html>

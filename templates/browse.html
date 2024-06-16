@@ -1,0 +1,67 @@
+<html>
+<head>
+    <title>Перегляд записів</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            margin-top: 0;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 60%;
+            max-width: 800px;
+        }
+        li {
+            background: #fff;
+            margin: 10px 0;
+            padding: 20px;
+            box-shadow: 0px 0px 10px #888888;
+            border-radius: 7px;
+        }
+        li p {
+            margin: 10px 0;
+        }
+        a {
+            color: #000000;
+            text-decoration: none;
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            box-shadow: 0px 0px 10px #888888;
+            border-radius: 7px;
+            background-color: #fff;
+        }
+        .homepage {
+            background-color: #4D93F4;
+            color: #ffffff;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Перегляд записів</h1>
+    {% if entries|length > 0 %}
+        <ul>
+        {% for entry in entries %}
+            <li>
+                <b>{{ entry.title }}</b> ({{ entry.date }})
+                <p>{{ entry.content }}</p>
+                <p>{{ entry.comment }}</p>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Немає записів</p>
+    {% endif %}
+    <a class="homepage" href="{{ url_for('index') }}">Повернутися на головну сторінку</a>
+</body>
+</html>
